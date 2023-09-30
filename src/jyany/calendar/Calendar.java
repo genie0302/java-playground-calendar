@@ -16,18 +16,25 @@ public class Calendar {
         return MAX_DAYS[month];
     }
     public static void main(String[] args) {
-
-        System.out.println("반복 횟수를 입력하세요.");
         Scanner sc = new Scanner(System.in);
-        int count = sc.nextInt();
-        int[] monthInputs = new int[count];
         Calendar cal = new Calendar();
-        System.out.println("월을 입력하세요.");
-        for (int i = 0; i < count; i++){
-            monthInputs[i] = sc.nextInt();
+
+        while (true){
+            System.out.println("월을 입력하세요.");
+            System.out.print("cal> ");
+            int month = sc.nextInt();
+
+            if (month == -1){
+                break;
+            }
+            else if (month < 1 || month > 12){
+                continue;
+            }
+
+            System.out.printf("%d월은 %d일까지 있습니다.\n", month, cal.getMaxDaysOfMonth(month));
+
         }
-        for (int i = 0; i < count; i++){
-            System.out.printf("%d월은 %d일까지 있습니다.\n", monthInputs[i], cal.getMaxDaysOfMonth(monthInputs[i]));
-        }
+
+        System.out.println("Have a nice day~");
     }
 }
