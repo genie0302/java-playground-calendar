@@ -3,24 +3,29 @@ package jyany.calendar;
 import java.util.Scanner;
 
 public class Prompt {
-    private static final String PROMPT = "cal> ";
+   // private static final String PROMPT = "cal> ";
     public void runPrompt(){
         Scanner sc = new Scanner(System.in);
         Calendar cal = new Calendar();
 
         while (true){
-            System.out.println("월을 입력하세요.");
-            System.out.print(PROMPT);
-            int month = sc.nextInt();
+            System.out.println("년도를 입력하세요.");
+            System.out.print("YEAR> ");
+            int year = sc.nextInt();
 
-            if (month == -1){
+            if (year == -1) {
                 break;
             }
-            else if (month < 1 || month > 12){
+
+            System.out.println("월을 입력하세요.");
+            System.out.print("MONTH> ");
+            int month = sc.nextInt();
+
+            if (month < 1 || month > 12){
                 continue;
             }
             else {
-                cal.printCalendar(2023, month);
+                cal.printCalendar(year, month);
             }
         }
         System.out.println("Bye~");
