@@ -3,7 +3,6 @@ package jyany.calendar;
 import java.util.Scanner;
 
 public class Prompt {
-   // private static final String PROMPT = "cal> ";
     public void runPrompt(){
         Scanner sc = new Scanner(System.in);
         Calendar cal = new Calendar();
@@ -24,11 +23,7 @@ public class Prompt {
                 continue;
             }
 
-            System.out.println("첫번째 요일을 입력하세요. (SU, MO, WE, TH, FR, SA)");
-            System.out.print("WEEKDAY> ");
-            String weekday = sc.next();
-
-            cal.printCalendar(year, month, weekday);
+            cal.printCalendar(year, month);
         }
         System.out.println("Bye~");
     }

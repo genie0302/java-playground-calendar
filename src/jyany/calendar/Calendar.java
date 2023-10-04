@@ -3,13 +3,13 @@ package jyany.calendar;
 public class Calendar {
     private static final int[] MAX_DAYS = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     private static final int[] LEAP_YEAR_MAX_DAYS = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    public void printCalendar(int year, int month, String weekday) {
+    public void printCalendar(int year, int month) {
         System.out.printf("   <<%4d년%3d월>>\n", year, month);
         System.out.println("SU MO TU WE TH FR SA");
         System.out.println("--------------------");
 
         int maxDays = getMaxDaysOfMonth(year, month);
-        int spaceSize = parseDay(weekday);
+        int spaceSize = findFirstDay(year, month);
         for (int i = 0; i < spaceSize; i++){
             System.out.print("   ");
         }
@@ -38,26 +38,29 @@ public class Calendar {
         }
     }
 
-    /*
-    * @param weekday 요일명
-    * @return 0~6 (0 = Sunday, 6 = Saturday)
-    */
-    public int parseDay (String weekday) {
-        switch (weekday){
-            case "MO":
-                return 1;
-            case "TU":
-                return 2;
-            case "WE":
-                return 3;
-            case "TH":
-                return 4;
-            case "FR":
-                return 5;
-            case "SA":
-                return 6;
-            default:
-                return 0;
+    // Sun: 0 ~ Sat: 6
+    // 주어진 년, 월의 1일이 무슨 요일인지 구하는 함수
+    public int findFirstDay (int year, int month) {
+
+        int[] referenceDays = {5, 3, 2, 0}; //금, 수, 화, 일
+        int[] leapYearSameDayWithDoomsDay = {0, 4, 29, 21, 4, 9, 6, 11, 8, 5, 10, 7, 12};
+        int[] sameDayWithDoomsDay = {0, 3, 28, 21, 4, 9, 6, 11, 8, 5, 10, 7, 12};
+
+        int referDay = referenceDays[((year / 100) - 2 ) % 4];
+        int doomsDay = referDay + (year % 100) / 12 + (year % 100) % 12 + (year % 100) % 12 / 4;
+        doomsDay %= 7;
+
+        int day = 0;
+        if (isLeapYear(year)) {
+            day = (doomsDay - (leapYearSameDayWithDoomsDay[month] - 1)) % 7;
         }
+        else {
+            day = (doomsDay - (sameDayWithDoomsDay[month] - 1)) % 7;
+        }
+
+        if (day < 0)
+            day += 7;
+
+        return day;
     }
 }
