@@ -1,8 +1,41 @@
 package jyany.calendar;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Calendar {
     private static final int[] MAX_DAYS = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     private static final int[] LEAP_YEAR_MAX_DAYS = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    private final Map<LocalDate, List<String>> map;
+
+    public Calendar(){
+        map = new HashMap<>();
+    }
+    public void registerSchedule (String strDate, String schedule) {
+        LocalDate date = LocalDate.parse(strDate);
+        if (map.containsKey(date)){
+            List<String> scheduleList = map.get(date);
+            scheduleList.add(schedule);
+        }
+        else {
+            List<String> scheduleList = new ArrayList<>();
+            scheduleList.add(schedule);
+            map.put(date, scheduleList);
+        }
+    }
+    public void searchSchedule (String strDate) {
+        LocalDate date = LocalDate.parse(strDate);
+        if (map.containsKey(date)){
+            List<String> scheduleList = map.get(date);
+            System.out.println(scheduleList.size() + "개의 일정이 있습니다.");
+            for (int i = 0; i < scheduleList.size(); i++){
+                System.out.println(i+1 + ". " + scheduleList.get(i));
+            }
+        }
+    }
     public void printCalendar(int year, int month) {
         System.out.printf("   <<%4d년%3d월>>\n", year, month);
         System.out.println("SU MO TU WE TH FR SA");
@@ -50,7 +83,7 @@ public class Calendar {
         int doomsDay = referDay + (year % 100) / 12 + (year % 100) % 12 + (year % 100) % 12 / 4;
         doomsDay %= 7;
 
-        int day = 0;
+        int day;
         if (isLeapYear(year)) {
             day = (doomsDay - (leapYearSameDayWithDoomsDay[month] - 1)) % 7;
         }
