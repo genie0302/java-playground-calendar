@@ -10,8 +10,8 @@ public class Prompt {
         Scanner sc = new Scanner(System.in);
         Calendar cal = new Calendar();
 
-        label:
-        while (true) {
+        boolean isLoop = true;
+        while (isLoop) {
             System.out.println("명령 (1, 2, 3, h, q)");
             System.out.print("> ");
             String input = sc.nextLine();
@@ -30,7 +30,8 @@ public class Prompt {
                     printMenu();
                     break;
                 case "q":
-                    break label;
+                    isLoop = false;
+                    break;
             }
         }
         System.out.println("Bye");
@@ -69,9 +70,9 @@ public class Prompt {
 
         System.out.println("일정을 입력하세요.");
         System.out.print("> ");
-        String schedule = sc.nextLine();
+        String plan = sc.nextLine();
 
-        cal.registerSchedule(date, schedule);
+        cal.registerPlan(date, plan);
 
         System.out.println("일정이 등록되었습니다.");
     }
@@ -81,7 +82,12 @@ public class Prompt {
         System.out.print("> ");
         String date = sc.nextLine();
 
-        cal.searchSchedule(date);
+        PlanItem planItem = cal.searchPlan(date);
+        if (planItem != null){
+            planItem.showPlan();
+        } else{
+            System.out.println("해당 날짜에 등록된 일정이 없습니다.");
+        }
     }
     public static void main(String[] args) {
         //쉘 실행

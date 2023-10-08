@@ -1,40 +1,31 @@
 package jyany.calendar;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Calendar {
     private static final int[] MAX_DAYS = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     private static final int[] LEAP_YEAR_MAX_DAYS = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    private final Map<LocalDate, List<String>> map;
+    private final Map<LocalDate, PlanItem> planMap;
 
     public Calendar(){
-        map = new HashMap<>();
+        planMap = new HashMap<>();
     }
-    public void registerSchedule (String strDate, String schedule) {
-        LocalDate date = LocalDate.parse(strDate);
-        if (map.containsKey(date)){
-            List<String> scheduleList = map.get(date);
-            scheduleList.add(schedule);
-        }
-        else {
-            List<String> scheduleList = new ArrayList<>();
-            scheduleList.add(schedule);
-            map.put(date, scheduleList);
+    public void registerPlan (String strDate, String plan) {
+        LocalDate date = PlanItem.getDateFromString(strDate);
+
+        if (planMap.containsKey(date)){
+            PlanItem planItem = planMap.get(date);
+            planItem.addPlan(plan);
+        } else {
+            PlanItem planItem = new PlanItem(strDate, plan);
+            planMap.put(date, planItem);
         }
     }
-    public void searchSchedule (String strDate) {
-        LocalDate date = LocalDate.parse(strDate);
-        if (map.containsKey(date)){
-            List<String> scheduleList = map.get(date);
-            System.out.println(scheduleList.size() + "개의 일정이 있습니다.");
-            for (int i = 0; i < scheduleList.size(); i++){
-                System.out.println(i+1 + ". " + scheduleList.get(i));
-            }
-        }
+    public PlanItem searchPlan (String strDate) {
+        LocalDate date = PlanItem.getDateFromString(strDate);
+        return planMap.getOrDefault(date, null);
     }
     public void printCalendar(int year, int month) {
         System.out.printf("   <<%4d년%3d월>>\n", year, month);
@@ -57,16 +48,14 @@ public class Calendar {
     public boolean isLeapYear(int year) {
         if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0){
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
     public int getMaxDaysOfMonth (int year, int month){
         if (isLeapYear(year)){
             return LEAP_YEAR_MAX_DAYS[month];
-        }
-        else {
+        } else {
             return MAX_DAYS[month];
         }
     }
@@ -86,8 +75,7 @@ public class Calendar {
         int day;
         if (isLeapYear(year)) {
             day = (doomsDay - (leapYearSameDayWithDoomsDay[month] - 1)) % 7;
-        }
-        else {
+        } else {
             day = (doomsDay - (sameDayWithDoomsDay[month] - 1)) % 7;
         }
 
