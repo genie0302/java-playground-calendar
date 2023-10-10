@@ -39,9 +39,12 @@ public class Prompt {
 
     private void cmdCal(Scanner sc, Calendar cal) {
         while (true){
-            System.out.println("년도를 입력하세요.");
+            System.out.println("년도를 입력하세요. (-1: 이전 메뉴로)");
             System.out.print("YEAR> ");
             int year = Integer.parseInt(sc.nextLine());
+            if (year == -1){
+                return;
+            }
 
             System.out.println("월을 입력하세요.");
             System.out.print("MONTH> ");
