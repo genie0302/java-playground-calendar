@@ -1,12 +1,13 @@
 package jyany.calendar;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlanItem {
-    private final LocalDate date;
-    private final List<String> planList;
+    public final LocalDate date;
+    public final List<String> planList;
 
     public static LocalDate getDateFromString (String strDate){
         return LocalDate.parse(strDate);
@@ -15,6 +16,15 @@ public class PlanItem {
         this.date = getDateFromString(strDate);
         this.planList = new ArrayList<>();
         addPlan(plan);
+    }
+
+    public PlanItem (String strDate) {
+        this.date = getDateFromString(strDate);
+        this.planList = new ArrayList<>();
+    }
+
+    public String getStrDate(){
+        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
     public void addPlan(String plan){
         planList.add(plan);
